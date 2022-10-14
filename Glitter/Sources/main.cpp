@@ -41,6 +41,7 @@ int main(int argc, char * argv[]) {
 	VAO vao;
 	vao.bind();
 	vao.createVBO(vertices);
+	vao.unbind();
 
 	// Shader
 	Shader shader(
