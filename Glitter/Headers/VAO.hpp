@@ -28,6 +28,7 @@ public:
 	VAO();
 	GLuint getID() const;
 	void bind() const;
+	void unbind();
 	void createVBO(float* vertices);
 	std::vector<VBO> getVBOs();
 

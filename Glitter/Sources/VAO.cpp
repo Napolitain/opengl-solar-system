@@ -38,6 +38,11 @@ void VAO::bind() const {
 	std::cout << "VAO(" << id << "): binded." << std::endl;
 }
 
+void VAO::unbind() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
 std::vector<VAO::VBO> VAO::getVBOs() {
 	return VBOs;
 }
