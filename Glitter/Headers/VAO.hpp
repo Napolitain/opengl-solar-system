@@ -6,26 +6,27 @@
 #define GLITTER_VAO_HPP
 
 #include "vector"
+#include "glad/glad.h"
 
 class VAO {
 	// START VBO =================
 	class VBO {
-		unsigned int id;
+		GLuint id;
 
 	public:
 		explicit VBO(float vertices[]);
-		unsigned int getID() const;
+		GLuint getID() const;
 		void bind(float *vertices) const;
 
 	};
 	// END VBO ===================
 
-	unsigned int id;
+	GLuint id;
 	std::vector<VBO> VBOs;
 
 public:
 	VAO();
-	unsigned int getID() const;
+	GLuint getID() const;
 	void bind() const;
 	void createVBO(float* vertices);
 	std::vector<VBO> getVBOs();
