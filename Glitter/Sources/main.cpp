@@ -41,8 +41,6 @@ int main(int argc, char * argv[]) {
 	VAO vao;
 	vao.bind();
 	vao.createVBO(vertices);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) nullptr);
-	glEnableVertexAttribArray(0);
 
 	// Shader
 	Shader shader(
