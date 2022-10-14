@@ -12,8 +12,8 @@
 int main(int argc, char * argv[]) {
     // Load GLFW and Create a Window
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -29,6 +29,16 @@ int main(int argc, char * argv[]) {
     glfwMakeContextCurrent(mWindow);
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
+    
+    float vertices[] = {
+        -1.0f, -1.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,
+         0.0f,  0.5f, 0.0f
+    };
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
