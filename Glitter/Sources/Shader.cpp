@@ -7,7 +7,7 @@
 
 #include "../Headers/Shader.hpp"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
     // 1. retrieve vertex/fragment source code from path
     std::string vertexCode, fragmentCode;
     std::ifstream vShaderFile, fShaderFile;
@@ -18,8 +18,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     
     try {
         // open files
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
+        vShaderFile.open(vertexPath.c_str());
+        fShaderFile.open(fragmentPath.c_str());
         std::stringstream vShaderStream, fShaderStream;
         // read file's buffer contents into streams
         vShaderStream << vShaderFile.rdbuf();

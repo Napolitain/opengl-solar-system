@@ -1,5 +1,7 @@
 // Local Headers
 #include "glitter.hpp"
+#include "Shader.hpp"
+#include "VAO.hpp"
 
 // System Headers
 #include <glad/glad.h>
@@ -12,8 +14,8 @@
 int main(int argc, char * argv[]) {
     // Load GLFW and Create a Window
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -29,16 +31,24 @@ int main(int argc, char * argv[]) {
     glfwMakeContextCurrent(mWindow);
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
-    
-    float vertices[] = {
-        -1.0f, -1.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// Defines vertices and vbos
+	float vertices[] = {
+			-0.5f, -0.5f, 0.0f, // left
+			0.5f, -0.5f, 0.0f, // right
+			0.0f,  0.5f, 0.0f  // top
+	};
+	VAO vao;
+	vao.bind();
+	vao.createVBO(vertices);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) nullptr);
+	glEnableVertexAttribArray(0);
+
+	// Shader
+	Shader shader(
+			"vshader.glsl",
+			"fshader.glsl"
+			);
 
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
@@ -46,8 +56,15 @@ int main(int argc, char * argv[]) {
             glfwSetWindowShouldClose(mWindow, true);
 
         // Background Fill Color
-        glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
+        glClearColor(0.2f, 0.2f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+		// Use shader
+		shader.use();
+
+		// Draw the object
+		vao.bind();
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
