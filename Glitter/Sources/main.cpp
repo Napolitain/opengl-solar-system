@@ -34,9 +34,10 @@ int main(int argc, char * argv[]) {
 
 	// Defines vertices and vbos
 	std::vector<float> vertices = {
-			-0.5f, -0.5f, 0.0f, // left
-			0.5f, -0.5f, 0.0f, // right
-			0.0f,  0.5f, 0.0f  // top
+			// positions         // colors
+			0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+			0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
 	};
 	VAO vao;
 	vao.bind();
@@ -55,7 +56,7 @@ int main(int argc, char * argv[]) {
             glfwSetWindowShouldClose(mWindow, true);
 
         // Background Fill Color
-        glClearColor(0.2f, 0.2f, 1.0f, 1.0f);
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
 		// Use shader
