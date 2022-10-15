@@ -42,6 +42,9 @@ file(GLOB PROJECT_SHADERS Glitter/Shaders/*.comp
                           Glitter/Shaders/*.frag
                           Glitter/Shaders/*.geom
                           Glitter/Shaders/*.vert)
+file(GLOB PROJECT_RESSOURCES
+        Glitter/Ressources/*.jpg
+        Glitter/Ressources/*.obj)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           Readme.md
                          .gitattributes
@@ -52,6 +55,7 @@ source_group("Headers" FILES ${PROJECT_HEADERS})
 source_group("Shaders" FILES ${PROJECT_SHADERS})
 source_group("Sources" FILES ${PROJECT_SOURCES})
 source_group("Vendors" FILES ${VENDORS_SOURCES})
+source_group("Ressources" FILES ${PROJECT_RESSOURCES})
 
 add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
@@ -68,3 +72,13 @@ add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Glitter/Shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>
     DEPENDS ${PROJECT_SHADERS})
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Glitter/Ressources/Textures $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    DEPENDS ${PROJECT_RESSOURCES})
+
+add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Glitter/Ressources/Models $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        DEPENDS ${PROJECT_RESSOURCES})
