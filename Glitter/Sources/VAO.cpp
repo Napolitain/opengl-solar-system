@@ -33,7 +33,7 @@ void VAO::VBO::bind(const std::vector<float>& vertices) const {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 }
 
 // VAO ===========================
@@ -67,7 +67,11 @@ void VAO::createVBO(const std::vector<float> &vertices, const std::vector<unsign
 	VBOs.emplace_back(VBO(vertices, indices));
 }
 
-void VAO::draw(int n) {
-	glDrawElements(GL_TRIANGLES, n, GL_UNSIGNED_INT, nullptr);
+void VAO::draw(int n, bool strip = false) {
+	if (!strip) {
+		glDrawArrays(GL_TRIANGLES, 0, n);
+	} else {
+		glDrawElements(GL_TRIANGLES, n, GL_UNSIGNED_INT, nullptr);
+	}
 }
 

@@ -34,7 +34,7 @@ public:
 	void createVBO(const std::vector<float>& vertices);
 	void createVBO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 	std::vector<VBO> getVBOs();
-	void draw(int n);
+	void draw(int n, bool strip);
 
 };
 

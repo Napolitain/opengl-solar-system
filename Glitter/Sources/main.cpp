@@ -77,7 +77,7 @@ int main(int argc, char * argv[]) {
 			);
 
 	// Options
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
@@ -94,7 +94,7 @@ int main(int argc, char * argv[]) {
 		// Draw the object
 		glBindTexture(GL_TEXTURE_2D, texture);
 		vao.bind();
-		vao.draw(indices.size());
+		vao.draw(indices.size(), true);
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
