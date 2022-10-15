@@ -14,9 +14,9 @@ class VAO {
 		GLuint id;
 
 	public:
-		explicit VBO(float vertices[]);
+		explicit VBO(const std::vector<float>& vertices);
 		GLuint getID() const;
-		void bind(float *vertices) const;
+		void bind(const std::vector<float>& vertices) const;
 
 	};
 	// END VBO ===================
@@ -29,7 +29,7 @@ public:
 	GLuint getID() const;
 	void bind() const;
 	void unbind();
-	void createVBO(float* vertices);
+	void createVBO(const std::vector<float>& vertices);
 	std::vector<VBO> getVBOs();
 
 };

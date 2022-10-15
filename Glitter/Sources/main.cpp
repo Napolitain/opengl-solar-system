@@ -33,7 +33,7 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
 
 	// Defines vertices and vbos
-	float vertices[] = {
+	std::vector<float> vertices = {
 			-0.5f, -0.5f, 0.0f, // left
 			0.5f, -0.5f, 0.0f, // right
 			0.0f,  0.5f, 0.0f  // top
