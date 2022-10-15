@@ -13,6 +13,14 @@ VAO::VBO::VBO(const std::vector<float>& vertices) {
 	bind(vertices);
 }
 
+VAO::VBO::VBO(const std::vector<float> &vertices, const std::vector<unsigned int> &indices) {
+	glGenBuffers(1, &id);
+	bind(vertices);
+	glGenBuffers(1, &ebo); // EBO
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size(), &indices[0], GL_STATIC_DRAW);
+}
+
 unsigned int VAO::VBO::getID() const {
 	return id;
 }
@@ -54,3 +62,12 @@ unsigned int VAO::getID() const {
 void VAO::createVBO(const std::vector<float>& vertices) {
 	VBOs.emplace_back(VBO(vertices));
 }
+
+void VAO::createVBO(const std::vector<float> &vertices, const std::vector<unsigned int> &indices) {
+	VBOs.emplace_back(VBO(vertices, indices));
+}
+
+void VAO::draw(int n) {
+	glDrawElements(GL_TRIANGLES, n, GL_UNSIGNED_INT, nullptr);
+}
+

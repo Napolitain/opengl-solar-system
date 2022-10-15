@@ -34,6 +34,9 @@ int main(int argc, char * argv[]) {
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
 
+	// VSync
+	glfwSwapInterval(1);
+
 	// Defines vertices and vbos
 	std::vector<float> vertices = {
 			// positions          // colors           // texture coords
@@ -42,9 +45,13 @@ int main(int argc, char * argv[]) {
 			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
 			-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
 	};
+	std::vector<unsigned int> indices = {  // note that we start from 0!
+			0, 1, 3,   // first triangle
+			1, 2, 3    // second triangle
+	};
 	VAO vao;
 	vao.bind();
-	vao.createVBO(vertices);
+	vao.createVBO(vertices, indices);
 	vao.unbind();
 
 	// Texture
@@ -69,13 +76,13 @@ int main(int argc, char * argv[]) {
 			"fshader.glsl"
 			);
 
+	// Options
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
         if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(mWindow, true);
-
-		// VSync
-		glfwSwapInterval(1);
 
         // Background Fill Color
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -87,7 +94,7 @@ int main(int argc, char * argv[]) {
 		// Draw the object
 		glBindTexture(GL_TEXTURE_2D, texture);
 		vao.bind();
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		vao.draw(indices.size());
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);

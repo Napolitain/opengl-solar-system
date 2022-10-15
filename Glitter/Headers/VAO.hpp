@@ -12,9 +12,11 @@ class VAO {
 	// START VBO =================
 	class VBO {
 		GLuint id;
+		GLuint ebo;
 
 	public:
 		explicit VBO(const std::vector<float>& vertices);
+		VBO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 		GLuint getID() const;
 		void bind(const std::vector<float>& vertices) const;
 
@@ -30,7 +32,9 @@ public:
 	void bind() const;
 	void unbind();
 	void createVBO(const std::vector<float>& vertices);
+	void createVBO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 	std::vector<VBO> getVBOs();
+	void draw(int n);
 
 };
 
