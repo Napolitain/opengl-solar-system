@@ -85,6 +85,7 @@ void VAO::createVBO(const std::vector<float> &vertices, const std::vector<unsign
 }
 
 void VAO::draw(int n, bool strip = false) {
+	bind();
 	if (!strip) {
 		glDrawArrays(GL_TRIANGLES, 0, n);
 	} else {

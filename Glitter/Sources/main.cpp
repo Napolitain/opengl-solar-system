@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "GameObject.hpp"
 
 // Standard Headers
 #include <cstdio>
@@ -37,6 +38,12 @@ int main(int argc, char * argv[]) {
 	// Others
 	glfwSwapInterval(1);
 	glEnable(GL_DEPTH_TEST);
+
+	// Shader
+	Shader shader(
+			"vshader.glsl",
+			"fshader.glsl"
+	);
 
 	// Defines vertices and vbos
 	std::vector<float> vertices = {
@@ -83,10 +90,20 @@ int main(int argc, char * argv[]) {
 			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
-	VAO vao;
-	vao.bind();
-	vao.createVBO(vertices, false, true);
-	vao.unbind();
+	GameObject cube(glm::vec3(-0.5f, 0.2f, 0.0f));
+	cube.loadVertices(vertices, false, true);
+
+	// MVP
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
+	projection = glm::perspective(glm::radians(45.0f), (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
+	unsigned int modelLoc = glGetUniformLocation(shader.id, "model");
+	unsigned int viewLoc = glGetUniformLocation(shader.id, "view");
+	unsigned int projectionLoc = glGetUniformLocation(shader.id, "projection");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cube.getModel()));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
 	// Texture
 	int width, height, channels;
@@ -103,12 +120,6 @@ int main(int argc, char * argv[]) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Shader
-	Shader shader(
-			"vshader.glsl",
-			"fshader.glsl"
-			);
 
 	// Options
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -127,8 +138,7 @@ int main(int argc, char * argv[]) {
 
 		// Draw the object
 		glBindTexture(GL_TEXTURE_2D, texture);
-		vao.bind();
-		vao.draw(vertices.size() / 5, false);
+		cube.draw();
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
