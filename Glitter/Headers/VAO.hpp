@@ -15,10 +15,11 @@ class VAO {
 		GLuint ebo;
 
 	public:
-		explicit VBO(const std::vector<float>& vertices);
-		VBO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+		explicit VBO(const std::vector<float> &vertices, bool colors, bool texture);
+		VBO(const std::vector<float> &vertices, const std::vector<unsigned int> &indices, bool colors,
+			bool texture);
 		GLuint getID() const;
-		void bind(const std::vector<float>& vertices) const;
+		void bind(const std::vector<float> &vertices, bool colors, bool texture) const;
 
 	};
 	// END VBO ===================
@@ -31,8 +32,9 @@ public:
 	GLuint getID() const;
 	void bind() const;
 	void unbind();
-	void createVBO(const std::vector<float>& vertices);
-	void createVBO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+	void createVBO(const std::vector<float> &vertices, bool colors, bool texture);
+	void
+	createVBO(const std::vector<float> &vertices, const std::vector<unsigned int> &indices, bool colors, bool texture);
 	std::vector<VBO> getVBOs();
 	void draw(int n, bool strip);
 
