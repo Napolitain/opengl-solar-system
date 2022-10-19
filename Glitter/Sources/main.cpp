@@ -90,11 +90,17 @@ int main(int argc, char * argv[]) {
 			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
+
+	// Scene
 	GameObject cube;
 	cube.transform.position = glm::vec3(-0.5f, 0.0f, -1.0f);
 	cube.transform.rotation = glm::vec3(0.5f, 1.0f, 1.0f);
 	cube.transform.scale = glm::vec3(0.9f, 1.5f, 1.0f);
 	cube.loadVertices(vertices, false, true);
+	GameObject smallCube;
+	smallCube.transform.position = glm::vec3(0.6f, 0.0f, 0.0f);
+	smallCube.transform.scale = glm::vec3(0.3f, 0.3f, 0.3f);
+	smallCube.loadVertices(vertices, false, true);
 
 	// Texture
 	int width, height, channels;
@@ -142,6 +148,7 @@ int main(int argc, char * argv[]) {
 		// Draw the object
 		glBindTexture(GL_TEXTURE_2D, texture);
 		cube.draw();
+		smallCube.draw();
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
