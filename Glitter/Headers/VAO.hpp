@@ -33,8 +33,7 @@ public:
 	void bind() const;
 	void unbind();
 	void createVBO(const std::vector<float> &vertices, bool colors, bool texture);
-	void
-	createVBO(const std::vector<float> &vertices, const std::vector<unsigned int> &indices, bool colors, bool texture);
+	void createVBO(const std::vector<float> &vertices, const std::vector<unsigned int> &indices, bool colors, bool texture);
 	std::vector<VBO> getVBOs();
 	void draw(int n, bool strip);
 

@@ -90,7 +90,10 @@ int main(int argc, char * argv[]) {
 			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
-	GameObject cube(glm::vec3(-0.5f, 0.2f, 0.0f));
+	GameObject cube;
+	cube.transform.position = glm::vec3(-0.5f, 0.0f, -1.0f);
+	cube.transform.rotation = glm::vec3(0.5f, 1.0f, 1.0f);
+	cube.transform.scale = glm::vec3(0.9f, 1.5f, 1.0f);
 	cube.loadVertices(vertices, false, true);
 
 	// Texture

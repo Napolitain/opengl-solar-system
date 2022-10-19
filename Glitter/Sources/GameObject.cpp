@@ -6,10 +6,9 @@
 #include "VAO.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "GLFW/glfw3.h"
+#include <iostream>
 
-GameObject::GameObject(glm::vec3 position) {
-	this->position = position;
-}
+GameObject::GameObject() = default;
 
 void GameObject::loadVertices(const std::vector<float> &vertices, bool colors, bool texture) {
 	vao.bind();
@@ -19,11 +18,18 @@ void GameObject::loadVertices(const std::vector<float> &vertices, bool colors, b
 }
 
 void GameObject::draw() {
-	this->model = glm::translate(glm::mat4(1.0f), position);
-	this->model = glm::rotate(model, (float) glfwGetTime(), glm::vec3(0.5f, 1.0f, 1.0f));
+	this->transform.model = getModel();
 	vao.draw(size, false);
 }
 
 glm::mat4 GameObject::getModel() const {
-	return model;
+	// translation * rotation * scale (also known as TRS matrix)
+	return glm::translate(glm::mat4(1.0f), this->transform.position) *
+		glm::rotate(glm::mat4(1.0f), 1.0f, this->transform.rotation) *
+		glm::scale(glm::mat4(1.0f), this->transform.scale);
+}
+
+void GameObject::addChild(GameObject *gameObject) {
+	gameObject->parent = this;
+	children.emplace_back(gameObject);
 }
