@@ -50,6 +50,14 @@ jobs:
         key: ubuntu-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
         restore-keys: |
           ubuntu-ccache-
+
+    - name: ccache statistics before
+      shell: cmake -P {0}
+      run: |
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
+        set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
+        set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
+        execute_process(COMMAND ccache -s)
         
     - name: Install dependencies
       run: sudo apt-get install xorg-dev libglu1-mesa-dev
