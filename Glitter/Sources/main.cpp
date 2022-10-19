@@ -93,18 +93,6 @@ int main(int argc, char * argv[]) {
 	GameObject cube(glm::vec3(-0.5f, 0.2f, 0.0f));
 	cube.loadVertices(vertices, false, true);
 
-	// MVP
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
-	projection = glm::perspective(glm::radians(45.0f), (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
-	unsigned int modelLoc = glGetUniformLocation(shader.id, "model");
-	unsigned int viewLoc = glGetUniformLocation(shader.id, "view");
-	unsigned int projectionLoc = glGetUniformLocation(shader.id, "projection");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cube.getModel()));
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
-
 	// Texture
 	int width, height, channels;
 	unsigned char *data = stbi_load("container.jpg", &width, &height, &channels, 0);
@@ -135,6 +123,18 @@ int main(int argc, char * argv[]) {
 
 		// Use shader
 		shader.use();
+
+		// MVP
+		glm::mat4 view = glm::mat4(1.0f);
+		glm::mat4 projection = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
+		projection = glm::perspective(glm::radians(45.0f), (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
+		unsigned int modelLoc = glGetUniformLocation(shader.id, "model");
+		unsigned int viewLoc = glGetUniformLocation(shader.id, "view");
+		unsigned int projectionLoc = glGetUniformLocation(shader.id, "projection");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cube.getModel()));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
 		// Draw the object
 		glBindTexture(GL_TEXTURE_2D, texture);
