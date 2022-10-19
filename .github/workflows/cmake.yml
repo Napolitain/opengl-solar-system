@@ -20,6 +20,10 @@ jobs:
 
     steps:
 
+    - uses: actions/checkout@v3
+      with:
+        submodules: "recursive"
+        
     - name: Download ccache
       id: ccache
       shell: cmake -P {0}
@@ -46,10 +50,6 @@ jobs:
         key: ubuntu-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
         restore-keys: |
           ubuntu-ccache-
-
-    - uses: actions/checkout@v3
-      with:
-        submodules: "recursive"
         
     - name: Install dependencies
       run: sudo apt-get install xorg-dev libglu1-mesa-dev
