@@ -67,8 +67,19 @@ jobs:
 
         execute_process(COMMAND ccache -p)
         execute_process(COMMAND ccache -z)
-      
-        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        execute_process(
+          COMMAND cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+          RESULT_VARIABLE result
+          OUTPUT_VARIABLE output
+          ERROR_VARIABLE output
+          ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE
+        )
+        if (NOT result EQUAL 0)
+          string(REGEX MATCH "FAILED:.*$" error_message "${output}")
+          string(REPLACE "\n" "%0A" error_message "${error_message}")
+          message("::error::${error_message}")
+          message(FATAL_ERROR "Build failed")
+        endif()
 
     - name: ccache statistics
       shell: cmake -P {0}
