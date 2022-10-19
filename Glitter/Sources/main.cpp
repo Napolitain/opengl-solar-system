@@ -15,7 +15,7 @@
 #include <cstdlib>
 
 int main(int argc, char * argv[]) {
-    // Load GLFW and Create a Window
+    // Load GLFW and Create a Window --LBR
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
