@@ -36,7 +36,7 @@ jobs:
 
     - name: Extract ccache
       id: E_ccache
-      run: tar xvf --strip-path ./ccache.tar.xz
+      run: tar xvf ./ccache.tar.xz --strip-components 1
       
     - name: Prepare ccache timestamp
       id: ccache_cache_timestamp
