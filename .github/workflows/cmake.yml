@@ -28,6 +28,7 @@ jobs:
 
     - name: Download ccache
       id: ccache
+      shell: cmake -P {0}
       run: |
         set(ccache_url "https://github.com/ccache/ccache/releases/download/v4.7/ccache-4.7-linux-x86_64.tar.xz")
         file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
@@ -35,6 +36,7 @@ jobs:
      
     - name: Prepare ccache timestamp
       id: ccache_cache_timestamp
+      shell: cmake -P {0}
       run: |
         string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
         message("::set-output name=timestamp::${current_date}")
@@ -54,6 +56,7 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
+      shell: cmake -P {0}
       run: |
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
         set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
@@ -68,10 +71,12 @@ jobs:
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: ccache statistics
+      shell: cmake -P {0}
       run: |
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
         set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
         set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
+
         execute_process(COMMAND ccache -s)
 
     - name: Test
