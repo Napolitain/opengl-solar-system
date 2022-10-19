@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.22)
 project(Glitter)
 
 option(GLFW_BUILD_DOCS OFF)
@@ -26,6 +26,18 @@ else()
         set(GLAD_LIBRARIES dl)
     endif()
 endif()
+set(CMAKE_CXX_STANDARD 17)
+
+# Google Tests
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 include_directories(Glitter/Headers/
                     Glitter/Vendor/assimp/include/
@@ -39,6 +51,7 @@ file(GLOB VENDORS_SOURCES Glitter/Vendor/glad/src/glad.c)
 file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp)
 file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp)
 file(GLOB PROJECT_SHADERS Glitter/Shaders/*.glsl)
+file(GLOB TESTS_SOURCES Glitter/Tests/*.cpp)
 file(GLOB PROJECT_RESSOURCES
         Glitter/Ressources/*.jpg
         Glitter/Ressources/*.obj)
@@ -53,15 +66,21 @@ source_group("Shaders" FILES ${PROJECT_SHADERS})
 source_group("Sources" FILES ${PROJECT_SOURCES})
 source_group("Vendors" FILES ${VENDORS_SOURCES})
 source_group("Ressources" FILES ${PROJECT_RESSOURCES})
+source_group("Tests" FILES ${TESTS_SOURCES})
 
 add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
+
+enable_testing()
+
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES})
+                               ${VENDORS_SOURCES} ${TESTS_SOURCES})
+
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
-                      BulletDynamics BulletCollision LinearMath)
+                      BulletDynamics BulletCollision LinearMath GTest::gtest_main)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
 
@@ -79,3 +98,6 @@ add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Glitter/Ressources/Models $<TARGET_FILE_DIR:${PROJECT_NAME}>
         DEPENDS ${PROJECT_RESSOURCES})
+
+include(GoogleTest)
+gtest_discover_tests(${PROJECT_NAME})
